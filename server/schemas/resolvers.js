@@ -67,6 +67,9 @@ const resolvers = {
           },
           createMessage: async(p,args)=>{
               return Message.create(args)
+          },
+          findUser: async(p,{email})=>{
+            return User.findOne({email})
           }
     }
 }

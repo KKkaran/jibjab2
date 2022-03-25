@@ -42,6 +42,7 @@ const typeDefs = gql`
         createChannel(users:[Userss]!): Channel
         sendMessage(_id:ID,textValue:String!,senderId:Userss!):Channel
         createMessage(textValue:String!): Message
+        findUser(email:String!):User
     }
 `
 module.exports = typeDefs

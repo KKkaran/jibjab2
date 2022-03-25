@@ -1,56 +1,43 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import {
-  ApolloProvider,
-  ApolloClient,
-  InMemoryCache,
-  createHttpLink
-} from '@apollo/client';
-
-// for auth to create middleware
+import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-
-// Components and Pages
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-
-// CSS
-import './App.css';
-
-// Apollo client stuff
-const httpLink = createHttpLink({ uri: '/graphql' });
-// dont need to use first argument of setContext (request)
-const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('id_token');
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : ''
-    }
-  };
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
-});
-
+import Home from "./pages/Home"
+import Chat from "./pages/Chat"
 function App() {
+
+  const httpLink = createHttpLink({
+    uri: "/graphql"
+  })
+
+  const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem('id_token');
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    };
+  });
+
+  const client = new ApolloClient({
+    link:authLink.concat(httpLink),
+    cache: new InMemoryCache()
+  })
+
+
+
   return (
     <ApolloProvider client={client}>
       <Router>
-        <div className='container mainSection' >
-          <div id="content-wrap" >
-            <Header />
-            <Routes>
-              <Route exact path="/" element={<Home />} />
-              {/* <Route exact path="/saved" component={SavedBooks} />
-            <Route render={() => <h1 className="display-2">Wrong page!</h1>} /> */}
-            </Routes>
+        <div className="flex-column justify-flex-start min-100-vh">
+          
+          <div className="container">
+            <Route exact path="/" component={Home} />
+            <Route exact path="/chat" component={Chat} />
           </div>
-          <Footer />
+          
         </div>
       </Router>
     </ApolloProvider>
