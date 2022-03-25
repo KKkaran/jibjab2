@@ -19,7 +19,7 @@ const typeDefs = gql`
         _id: ID
         username:String
         email:String
-        channel:[Channel]
+        channelModel:[Channel]
         friends:[User]
     }
     input Userss{
@@ -39,7 +39,7 @@ const typeDefs = gql`
     type Mutation{
         addUser(username:String!, email:String!, password:String!): User
         login(email:String!,password:String!):User
-        createChannel(users:[Userss]!, messages:[Messagess]!): Channel
+        createChannel(users:[Userss]!): Channel
         sendMessage(_id:ID,textValue:String!,senderId:Userss!):Channel
         createMessage(textValue:String!): Message
     }
